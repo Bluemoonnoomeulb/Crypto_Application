@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.reactivex.rxjava3.annotations.NonNull
 
 @Entity(tableName = "full_coin_price_info")
 data class CoinPriceInfo(
@@ -15,10 +16,11 @@ data class CoinPriceInfo(
     @Expose
     val market: String? = null,
 
+    @NonNull
     @PrimaryKey
     @SerializedName("FROMSYMBOL")
     @Expose
-    val fromSymbol: String? = null,
+    val fromSymbol: String,
 
     @SerializedName("TOSYMBOL")
     @Expose

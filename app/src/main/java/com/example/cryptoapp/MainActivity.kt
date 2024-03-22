@@ -11,40 +11,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.cryptoapp.api.ApiFactory
+import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoapp.ui.theme.CryptoAppTheme
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainActivity : ComponentActivity() {
 
     private val compositeDisposable = CompositeDisposable()
+    private lateinit var viewModel: CoinViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CryptoAppTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     Greeting("Android")
                 }
             }
         }
-        val disposable = ApiFactory.apiService.getFullPriceList(fSyms = "BTC,ETH,SOL")
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d("X", it.toString())
-            }, {
-                Log.d("XYI", it.message!!)
-            })
-        compositeDisposable.add(disposable)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.dispose()
+        viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
+//        viewModel.priceList.observe(this) {
+//            Log.d("TEST_OF_LOADING_DATA", "Success in activity: $it")
+//        }
+        viewModel.getDetailsInfo("ETH").observe(this) {
+            Log.d("TEST_OF_LOADING_DATA", "Success in activity: $it")
+        }
     }
 }
 
