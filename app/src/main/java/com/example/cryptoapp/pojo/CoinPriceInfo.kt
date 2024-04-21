@@ -32,21 +32,17 @@ data class CoinPriceInfo(
     @Expose
     val lastMarket: String? = null,
 
-    @SerializedName("MEDIAN")
-    @Expose
-    val median: Double? = null,
-
-    @SerializedName("TOPTIERVOLUME24HOUR")
-    @Expose
-    val topTierVolume24Hour: Double? = null,
-
-    @SerializedName("TOPTIERVOLUME24HOURTO")
-    @Expose
-    val topTierVolume24HourTo: Double? = null,
-
     @SerializedName("PRICE")
     @Expose
     val price: Double? = null,
+
+    @SerializedName("HIGHDAY")
+    @Expose
+    val highDay: String?,
+
+    @SerializedName("LOWDAY")
+    @Expose
+    val lowDay: String?,
 
     @SerializedName("LASTUPDATE")
     @Expose

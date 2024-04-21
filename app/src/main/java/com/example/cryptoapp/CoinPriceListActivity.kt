@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoapp.adapters.CoinInfoAdapter
 import com.example.cryptoapp.databinding.ActivityCoinPriceListBinding
+import com.example.cryptoapp.pojo.CoinPriceInfo
 
 class CoinPriceListActivity : AppCompatActivity() {
 
@@ -17,8 +18,18 @@ class CoinPriceListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val adapter = CoinInfoAdapter()
+        val adapter = CoinInfoAdapter(this)
+        adapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
+            override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
+                val intent = CoinDetailsActivity.newIntent(
+                    this@CoinPriceListActivity,
+                    coinPriceInfo.fromSymbol
+                )
+                startActivity(intent)
+            }
+        }
         binding.recyclerView.adapter = adapter
+
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
         viewModel.priceList.observe(this) {
             adapter.coinInfoList = it
